@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind:       Deployment
+metadata:
+  name: $APP
+  labels:
+    app: $APP
+spec:
+  selector:
+    matchLabels:
+      app: $APP
+  replicas:        1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge:       1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: $APP
+    spec:
+      #      nodeSelector:
+      #        role: services
+      containers:
+        - image: $IMAGE
+          name:  $APP
+          ports:
+            - containerPort: $PORT
+              name:          http
+          env:
+            - name:  PORT
+              value: "80"
+            - name:  DB_HOSTNAME
+              value: 34.66.227.46
+            - name:  DB_USER
+              value: root
+            - name:  DB_PASSWORD
+              value: agaeq14
+            - name:  DB_NAME
+              value: streamnvr
+            - name:  RABBITMQ_URI
+              value: amqp://guest:guest@rabbitmq:5672
+          readinessProbe:
+            httpGet:
+              path: /monitoring/is_alive
+              port: $PORT
+            initialDelaySeconds: 5
+            timeoutSeconds:      1
+          livenessProbe:
+            httpGet:
+              path: /monitoring/is_alive
+              port: $PORT
+            initialDelaySeconds: 5
+            timeoutSeconds:      5
+          resources:
+            requests:
+              cpu:    "15m"
+              memory: 15Mi

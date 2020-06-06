@@ -1,0 +1,132 @@
+version: '3'
+
+services:
+
+
+  #
+  #  RabbitMQ (Message Broker)
+  #
+  rabbitmq:
+    image:          "rabbitmq:3-management"
+    container_name: "k8specs-rabbitmq"
+    hostname:       "rabbitmq"
+    restart:        always
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER:  "rabbitmq"
+      RABBITMQ_DEFAULT_PASS:  "agaeq14"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+    networks:
+
+      k8specs:
+
+#
+#  #
+#  #  Elasticsearch (Document Data Storage)
+#  #
+#  elasticsearch:
+#    image:          docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+#    container_name: "k8specs-elasticsearch"
+#    hostname:       "elasticsearch"
+#    restart:        always
+#    ports:
+#      - "9200:9200"
+#      - "9300:9300"
+#    environment:
+#      node.name:                    "elasticsearch"
+#      ES_JAVA_OPTS:                 "-Xmx256m -Xms256m"
+#      discovery-type:               "single-node"
+#      cluster.initial_master_nodes: "elasticsearch"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - k8specs-elasticsearch:/usr/share/elasticsearch/data
+#    networks:
+#
+#      k8specs:
+#
+#
+#  #
+#  #  Kibana (Elasticsearch Dashboard)
+#  #
+#  kibana:
+#    image:          docker.elastic.co/kibana/kibana:7.5.2
+#    container_name: "k8specs-kibana"
+#    hostname:       "kibana"
+#    restart:        always
+#    ports:
+#      - "5601:5601"
+#
+#    networks:
+#
+#      k8specs:
+#
+#
+#    depends_on:
+#      - elasticsearch
+#
+#  #
+#  #  Jaeger (for tracing)
+#  #
+#  jaeger:
+#    image:          jaegertracing/all-in-one:latest
+#    container_name: "k8specs-jaeger"
+#    hostname:       "jaeger"
+#    restart:        always
+#    environment:
+#      SPAN_STORAGE_TYPE: "elasticsearch"
+#      ES_SERVER_URLS:    "http://elasticsearch:9200"
+#    ports:
+#      - "6831:6831/udp" # Thrift Protocol
+#      - "16686:16686"   # Web Frontend
+#
+#    networks:
+#
+#      k8specs:
+#
+#
+#    depends_on:
+#      - elasticsearch
+#
+#  #
+#  #  Influxdb (Monitoring Metrics Store)
+#  #
+#  influxdb:
+#    image:          influxdb:latest
+#    container_name: "k8specs-influxdb"
+#    hostname:       "influxdb"
+#    ports:
+#      - "8083:8083"
+#      - "8086:8086"
+#      - "8090:8090"
+#    volumes:
+#      - k8specs-influxdb:/var/lib/influxdb
+#
+#    networks:
+#
+#      k8specs:
+
+
+#
+# Internal Networks
+#
+networks:
+
+  k8specs:
+
+#
+# Storage Volumes
+#
+volumes:
+  k8specs-postgres:
+  k8specs-pgadmin:
+  k8specs-elasticsearch:
+  k8specs-redis:
+  k8specs-influxdb:
+

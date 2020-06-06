@@ -1,0 +1,37 @@
+{
+    "name": "@streamnvr.com/template",
+    "version": "0.0.0",
+    "main": "dist/main.js",
+    "types": "dist/main.d.ts",
+    "license": "MIT",
+    "preversion": "rm -rf dist && tsc",
+    "postversion": "npm publish",
+    "scripts": {
+        "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.json\" ",
+        "release": "rm -rf dist && tsc && npm version patch && npm publish --access=private",
+        "build": "tsc"
+    },
+    "dependencies": {
+        "@nestjs.pro/common": "^1.0.43",
+        "@nestjs.pro/logger-elasticsearch": "^0.0.11",
+        "@nestjs.pro/rbac": "0.0.2",
+        "@nestjs/common": "^7.1.0",
+        "@nestjs/core": "^7.1.0",
+        "@nestjs/passport": "^7.0.0",
+        "@nestjs/swagger": "^4.5.8",
+        "@nestjs/typeorm": "^7.1.0",
+        "class-validator": "^0.12.2",
+        "jsonwebtoken": "^8.5.1",
+        "mysql": "^2.18.1",
+        "passport": "^0.4.1",
+        "passport-facebook": "^3.0.0",
+        "passport-github": "^1.1.0",
+        "passport-google-oauth20": "^2.0.0",
+        "passport-jwt": "^4.0.0",
+        "typeorm": "^0.2.25"
+    },
+    "devDependencies": {
+        "concurrently": "^5.2.0",
+        "wait-on": "^4.0.2"
+    }
+}
